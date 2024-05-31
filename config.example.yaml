@@ -1,0 +1,37 @@
+openai:
+  type: "openai"  # Specify "openai" or "azure". If "azure" is chosen, you must set azure_endpoint and azure_apiversion below.
+  api_key: "your_openai_or_azure_api_key"  # Enter your OpenAI or Azure OpenAI API key.
+  model: "your_openai_model_id"  # Enter the model ID you want to use, e.g., "gpt-4" or another model ID.
+  azure_endpoint: "your_azure_openai_endpoint"  # Set this only if type is "azure". Example: "https://your-resource-name.openai.azure.com/"
+  azure_apiversion: "your_azure_api_version"  # Set this only if type is "azure". Example: "2023-05-15"
+
+servers:
+  # The server group names can be freely modified. In this example, we use linux_group and windows_group.
+
+  linux_group:
+    - alias: "linux_server_1"  # An alias to identify the server.
+      host: "192.168.1.10"  # Enter the server's IP address or hostname.
+      port: 22  # SSH connection port. The default is 22.
+      username: "user"  # Username for SSH connection.
+      password: "password"  # Password for SSH connection.
+      os_type: "Linux"  # Specify the operating system type. Here, it is set to "Linux".
+    - alias: "linux_server_2"
+      host: "192.168.1.11"
+      port: 2202  # You can specify a different port if the default SSH port is not used.
+      username: "user"
+      password: "password"
+      os_type: "Linux"
+      
+  windows_group:
+    - alias: "windows_server_1"
+      host: "192.168.1.20"
+      port: 5985  # WinRM HTTP port. The default is 5985.
+      username: "user"
+      password: "password"
+      os_type: "Windows"  # Specify the operating system type. Here, it is set to "Windows".
+    - alias: "windows_server_2"
+      host: "192.168.1.21"
+      port: 5986  # WinRM HTTPS port.
+      username: "user"
+      password: "password"
+      os_type: "Windows"
