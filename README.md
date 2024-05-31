@@ -1,11 +1,12 @@
 # Remote AI Script Executor
 
-This project is a remote script executor that leverages OpenAI or Azure OpenAI to generate and execute scripts on remote Linux or Windows servers. The tool uses Paramiko for SSH connections to Linux servers and WinRM for connections to Windows servers.
+This project is a remote script executor that leverages OpenAI or Azure OpenAI to generate scripts centrally, execute them on remote Linux or Windows servers, and interpret the results back into natural language using OpenAI. The tool uses Paramiko for SSH connections to Linux servers and WinRM for connections to Windows servers.
 
 ## Features
 
 - Execute commands on multiple remote servers.
 - Generate scripts dynamically based on user input using OpenAI.
+- Execute generated scripts on remote servers and interpret the results into natural language.
 - Supports both Linux and Windows servers.
 - Option to run without confirmation for automation purposes.
 
@@ -123,7 +124,7 @@ python app.py -c config.yaml -s linux_server_1 -q "show me server's resource ove
 
 2. **Avoiding Destructive Queries**
    - It is strongly advised to avoid using queries that perform destructive actions such as deleting files, stopping critical services, or making significant changes to the system configuration.
-   - Examples of such queries include
+   - Examples of such queries include:
      - "Delete all log files"
      - "Stop the database service"
      - "Remove user accounts"
@@ -144,54 +145,51 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
-## Acknowledgements
-
-- [OpenAI](https://www.openai.com/)
-- [Azure OpenAI](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
-- [Paramiko](http://www.paramiko.org/)
-- [pywinrm](https://github.com/diyan/pywinrm)
-- [Rich](https://github.com/Textualize/rich)
-- [PyYAML](https://pyyaml.org/)
-
 ## Libraries and Licenses
 
 ### Paramiko
+[Paramiko](http://www.paramiko.org/)
 - **Description**: Paramiko is a Python implementation of the SSHv2 protocol, providing both client and server functionality.
 - **License**: LGPL-2.1
 - **Usage**: Used for SSH connections to Linux servers.
 - **Notice**: This project uses Paramiko, which is licensed under the GNU Lesser General Public License v2.1. See the [Paramiko License](https://github.com/paramiko/paramiko/blob/main/LICENSE) for more details.
 
 ### pywinrm
+[pywinrm](https://github.com/diyan/pywinrm)
 - **Description**: Python library for Windows Remote Management (WinRM), which allows you to execute commands on remote Windows machines.
 - **License**: MIT
 - **Usage**: Used for executing commands on Windows servers.
 
 ### OpenAI
+[OpenAI](https://www.openai.com/)
+[Azure OpenAI](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
 - **Description**: Official OpenAI Python client library, providing convenient access to the OpenAI API.
 - **License**: MIT
-- **Usage**: Used to interact with the OpenAI API for generating scripts based on user input.
+- **Usage**: Used to interact with the OpenAI API for generating scripts based on user input and interpreting the results.
 
 ### Rich
+[Rich](https://github.com/Textualize/rich)
 - **Description**: Python library for rich text and beautiful formatting in the terminal.
 - **License**: MIT
 - **Usage**: Used for formatting console output.
 
 ### PyYAML
+[PyYAML](https://pyyaml.org/)
 - **Description**: Python library for YAML parsing and emitting.
 - **License**: MIT
 - **Usage**: Used for parsing the YAML configuration file.
-
 
 ---
 
 # Remote AI Script Executor
 
-이 프로젝트는 OpenAI 또는 Azure OpenAI를 활용하여 원격 Linux 또는 Windows 서버에서 스크립트를 생성하고 실행하는 도구입니다. Paramiko를 사용하여 Linux 서버에 SSH 연결을 하고, WinRM을 사용하여 Windows 서버에 연결합니다.
+이 프로젝트는 OpenAI 또는 Azure OpenAI를 활용하여 중앙에서 스크립트를 생성하고, 이를 원격 Linux 또는 Windows 서버에서 실행한 후, 그 결과를 OpenAI를 통해 자연어로 해석하여 반환하는 도구입니다. Paramiko를 사용하여 Linux 서버에 SSH 연결을 하고, WinRM을 사용하여 Windows 서버에 연결합니다.
 
 ## 기능
 
 - 여러 원격 서버에서 명령을 실행할 수 있습니다.
 - 사용자 입력을 기반으로 OpenAI를 사용하여 동적으로 스크립트를 생성합니다.
+- 생성된 스크립트를 원격 서버에서 실행하고, 그 결과를 자연어로 해석하여 반환합니다.
 - Linux 및 Windows 서버를 지원합니다.
 - 자동화 목적으로 확인 없이 실행할 수 있는 옵션을 제공합니다.
 
@@ -234,7 +232,9 @@ pip install -r requirements.txt
 openai:
   type: "openai"  # "openai" 또는 "azure" 지정. "azure"가 선택되면 아래에 azure_endpoint와 azure_apiversion을 설정해야 합니다.
   api_key: "your_openai_or_azure_api_key"  # OpenAI 또는 Azure OpenAI API 키를 입력합니다.
-  model: "your_openai_model_id"  # 사용하고자 하는 모델 ID를 입력합니다. 예: "gpt-4" 또는 다른 모델 ID.
+  model: "
+
+your_openai_model_id"  # 사용하고자 하는 모델 ID를 입력합니다. 예: "gpt-4" 또는 다른 모델 ID.
   azure_endpoint: "your_azure_openai_endpoint"  # type이 "azure"인 경우에만 설정합니다. 예: "https://your-resource-name.openai.azure.com/"
   azure_apiversion: "your_azure_api_version"  # type이 "azure"인 경우에만 설정합니다. 예: "2023-05-15"
 
@@ -311,9 +311,9 @@ python app.py -c config.yaml -s linux_server_1 -q "서버의 리소스 개요를
    - 파일 삭제, 중요한 서비스 중지, 시스템 구성에 중대한 변경을 가하는 등의 위험한 작업을 수행하는 질의문은 사용하지 않는 것이 좋습니다.
    - 이러한 질의문의 예
      - "모든 로그 파일을 삭제해주세요."
-     - "특정 서비스를 중지해주세요."
+     - "데이터베이스 서비스를 중지해주세요."
      - "사용자 계정을 삭제해주세요."
-   - 가급적 위험한 작업 스크립트의 경우 사용자가 직접 수행하시길 바랍니다.
+   - 이러한 작업은 잘못 실행될 경우 심각한 결과를 초래할 수 있으므로 극도로 신중하게 처리해야 합니다.
 
 3. **사용자 책임**
    - 이 소프트웨어의 사용은 사용자의 책임입니다.
@@ -330,39 +330,36 @@ python app.py -c config.yaml -s linux_server_1 -q "서버의 리소스 개요를
 
 개선 사항이나 버그 수정을 위한 이슈를 열거나 풀 리퀘스트를 제출해 주세요.
 
-## 감사의 글
-
-- [OpenAI](https://www.openai.com/)
-- [Azure OpenAI](https://azure.microsoft.com/ko-kr/services/cognitive-services/openai-service/)
-- [Paramiko](http://www.paramiko.org/)
-- [pywinrm](https://github.com/diyan/pywinrm)
-- [Rich](https://github.com/Textualize/rich)
-- [PyYAML](https://pyyaml.org/)
-
 ## 라이브러리 및 라이센스
 
 ### Paramiko
+[Paramiko](http://www.paramiko.org/)
 - **설명**: Paramiko는 SSHv2 프로토콜의 Python 구현으로, 클라이언트 및 서버 기능을 제공합니다.
 - **라이센스**: LGPL-2.1
 - **사용 용도**: Linux 서버에 대한 SSH 연결에 사용됩니다.
 - **공지**: 이 프로젝트는 LGPL-2.1 라이센스를 따르는 Paramiko를 사용합니다. 자세한 내용은 [Paramiko 라이센스](https://github.com/paramiko/paramiko/blob/main/LICENSE)를 참조하십시오.
 
 ### pywinrm
+[pywinrm](https://github.com/diyan/pywinrm)
 - **설명**: 원격 Windows 머신에서 명령을 실행할 수 있는 Windows 원격 관리(WinRM)를 위한 Python 라이브러리입니다.
 - **라이센스**: MIT
 - **사용 용도**: Windows 서버에서 명령을 실행하는 데 사용됩니다.
 
 ### OpenAI
-- **설명**: OpenAI API에 편리하게 접근할 수 있는 공식 OpenAI Python 클라이언트 라이브러리입니다.
+[OpenAI](https://www.openai.com/)
+[Azure OpenAI](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
+- **설명**: 공식 OpenAI Python 클라이언트 라이브러리로, OpenAI API에 편리하게 접근할 수 있습니다.
 - **라이센스**: MIT
-- **사용 용도**: 사용자 입력을 기반으로 스크립트를 생성하기 위해 OpenAI API와 상호 작용하는 데 사용됩니다.
+- **사용 용도**: 사용자 입력을 기반으로 스크립트를 생성하고 결과를 해석하기 위해 OpenAI API와 상호 작용하는 데 사용됩니다.
 
 ### Rich
+[Rich](https://github.com/Textualize/rich)
 - **설명**: 터미널에서 리치 텍스트 및 아름다운 포맷을 제공하는 Python 라이브러리입니다.
 - **라이센스**: MIT
 - **사용 용도**: 콘솔 출력을 포맷하는 데 사용됩니다.
 
 ### PyYAML
+[PyYAML](https://pyyaml.org/)
 - **설명**: YAML 파싱 및 방출을 위한 Python 라이브러리입니다.
 - **라이센스**: MIT
 - **사용 용도**: YAML 구성 파일을 파싱하는 데 사용됩니다.
