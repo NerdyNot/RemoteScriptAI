@@ -164,7 +164,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 [OpenAI](https://www.openai.com/)
 [Azure OpenAI](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
 - **Description**: Official OpenAI Python client library, providing convenient access to the OpenAI API.
-- **License**: MIT
+- **License**: Apache License 2.0
 - **Usage**: Used to interact with the OpenAI API for generating scripts based on user input and interpreting the results.
 
 ### Rich
@@ -349,7 +349,7 @@ python app.py -c config.yaml -s linux_server_1 -q "서버의 리소스 개요를
 [OpenAI](https://www.openai.com/)
 [Azure OpenAI](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
 - **설명**: 공식 OpenAI Python 클라이언트 라이브러리로, OpenAI API에 편리하게 접근할 수 있습니다.
-- **라이센스**: MIT
+- **라이센스**: Apache License 2.0
 - **사용 용도**: 사용자 입력을 기반으로 스크립트를 생성하고 결과를 해석하기 위해 OpenAI API와 상호 작용하는 데 사용됩니다.
 
 ### Rich
