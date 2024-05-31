@@ -89,7 +89,7 @@ servers:
 To execute commands on remote servers, run the script with the appropriate arguments.
 
 ```sh
-python main.py -c config.yaml -g linux_group -q "Your command here"
+python app.py -c config.yaml -g linux_group -q "Your command here"
 ```
 
 ### Command-line Arguments
@@ -274,7 +274,7 @@ servers:
 원격 서버에서 명령을 실행하려면 적절한 인자/옵션과 함께 스크립트를 실행합니다.
 
 ```sh
-python main.py -c config.yaml -g linux_group -q "여기에 명령을 입력하세요"
+python app.py -c config.yaml -g linux_group -q "여기에 명령을 입력하세요"
 ```
 
 ### 명령줄 인수
