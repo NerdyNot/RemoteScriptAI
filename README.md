@@ -1,4 +1,4 @@
-# Remote AI Script Executor
+# RemoteScriptAI
 
 This project is a remote script executor that leverages OpenAI or Azure OpenAI to generate scripts centrally, execute them on remote Linux or Windows servers, and interpret the results back into natural language using OpenAI. The tool uses Paramiko for SSH connections to Linux servers and WinRM for connections to Windows servers.
 
