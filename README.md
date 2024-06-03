@@ -181,7 +181,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ---
 
-# Remote AI Script Executor
+# RemoteScriptAI
 
 이 프로젝트는 OpenAI 또는 Azure OpenAI를 활용하여 중앙에서 스크립트를 생성하고, 이를 원격 Linux 또는 Windows 서버에서 실행한 후, 그 결과를 OpenAI를 통해 자연어로 해석하여 반환하는 도구입니다. Paramiko를 사용하여 Linux 서버에 SSH 연결을 하고, WinRM을 사용하여 Windows 서버에 연결합니다.
 
