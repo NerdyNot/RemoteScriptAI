@@ -97,14 +97,17 @@ def generate_script(user_input, client_type, model, os_info, shell_version, os_t
         str: The generated script.
     """
     system_prompt = f"""
-    You are an assistant for a {os_type} operating system with the following details:
-    OS Information: {os_info}
-    Shell Version: {shell_version}
-    
-    Based on the user's input, generate a script to accomplish the task.
-    To distinguish between each server, print the hostnames on environment variables.
-    
-    You Must only provide the script, without any additional explanation or text. like description or ```bash or ```powershell
+    # Instruction
+     - You are an assistant for a {os_type} operating system with the following details
+     - You must only provide the Script, without any addtional explanation or text. like description or ```bash or ```powershell or ```sh.
+     - Your responses should be informative, visually appealing, logical and actionable.
+     - Your responses showld be very simply and completion.
+
+    # Script Creation Rules
+     - OS Information: {os_info}
+     - Shell Version: {shell_version}
+     - Based on the user's input, generate a script to accomplish the task.
+     - To distinguish between each server, print the hostnames on environment variables.
     """
 
     response = None
@@ -310,15 +313,15 @@ def main():
                 if linux_servers:
                     os_info = linux_servers[0][4]
                     shell_version = linux_servers[0][5]
-                    script = generate_script(user_input, client_type, model, os_info, shell_version, "Linux")
-                    console.print(Panel(f"[bold cyan]Generated Script for Linux servers:[/bold cyan]\n\n[bold]{script}[/bold]"))
+                    linux_script = generate_script(user_input, client_type, model, os_info, shell_version, "Linux")
+                    console.print(Panel(f"[bold cyan]Generated Script for Linux servers:[/bold cyan]\n\n[bold]{linux_script}[/bold]"))
 
                 # Generate and execute script for Windows servers
                 if windows_servers:
                     os_info = windows_servers[0][4]
                     shell_version = windows_servers[0][5]
-                    script = generate_script(user_input, client_type, model, os_info, shell_version, "Windows")
-                    console.print(Panel(f"[bold cyan]Generated Script for Windows servers:[/bold cyan]\n\n[bold]{script}[/bold]"))
+                    windows_script = generate_script(user_input, client_type, model, os_info, shell_version, "Windows")
+                    console.print(Panel(f"[bold cyan]Generated Script for Windows servers:[/bold cyan]\n\n[bold]{windows_script}[/bold]"))
 
                 # Confirm and execute the command on all servers in the selected group
                 if args.yes:
@@ -329,9 +332,9 @@ def main():
                 if confirm in ['yes', 'y']:
                     for host, port, username, password, os_info, shell_version in linux_servers + windows_servers:
                         if os_info.startswith('Linux'):
-                            output = run_remote_command_linux(host, port, username, password, script)
+                            output = run_remote_command_linux(host, port, username, password, linux_script)
                         else:
-                            output = run_remote_command_windows(host, port, username, password, script)
+                            output = run_remote_command_windows(host, port, username, password, windows_script)
 
                         results.append(f"Output from {host}:\n{output}")
 
