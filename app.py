@@ -109,34 +109,35 @@ def generate_script(user_input, client_type, model, os_info, shell_version, os_t
      - Based on the user's input, generate a script to accomplish the task.
      - To distinguish between each server, print the hostnames on environment variables.
     """
-
-    response = None
-    if client_type == "azure":
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt.strip()},
-                {"role": "user", "content": user_input}
-            ],
-            temperature=1,
-            max_tokens=1024,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
-    else:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt.strip()},
-                {"role": "user", "content": user_input}
-            ],
-            temperature=1,
-            max_tokens=1024,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
+    console = Console()
+    with console.status("[bold green]Generating Script...[/bold green]"):
+        response = None
+        if client_type == "azure":
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt.strip()},
+                    {"role": "user", "content": user_input}
+                ],
+                temperature=1,
+                max_tokens=1024,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
+        else:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt.strip()},
+                    {"role": "user", "content": user_input}
+                ],
+                temperature=1,
+                max_tokens=1024,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
 
     full_response = response.choices[0].message.content.strip()
     # Extract script part
@@ -174,32 +175,33 @@ def explain_execution_result(user_input, results, client_type, model):
     If the query is simply to run a specific program, respond that the program has been executed.
     Always respond in the user's language.
     """
-
-    response = None
-    if client_type == "azure":
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": prompt.strip()}
-            ],
-            temperature=1,
-            max_tokens=1024,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
-    else:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": prompt.strip()}
-            ],
-            temperature=1,
-            max_tokens=1024,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
+    console = Console()
+    with console.status("[bold green]Generating Explanation...[/bold green]"):
+        response = None
+        if client_type == "azure":
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": prompt.strip()}
+                ],
+                temperature=1,
+                max_tokens=1024,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
+        else:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": prompt.strip()}
+                ],
+                temperature=1,
+                max_tokens=1024,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
 
     explanation = response.choices[0].message.content.strip()
     return explanation
@@ -230,7 +232,7 @@ def main():
     client, client_type, model = set_openai_client(openai_config)
 
     # Validate the selected group if specified
-    if args.group and args.group not in server_groups:
+    if args.group and args.group not in server_groups and args.group != "single":
         console.print("[bold red]Invalid group selected.[/bold red]")
         return
 
@@ -261,15 +263,31 @@ def main():
             servers = server_groups[args.group]
         else:
             print("Available groups:")
+            console.print("- single")
             for group in server_groups.keys():
                 console.print(f"- {group}")
             selected_group = input("Please select a group: ").strip()
 
-            if selected_group not in server_groups:
+            if selected_group not in server_groups and selected_group != "single":
                 console.print("[bold red]Invalid group selected.[/bold red]")
                 return
 
-            servers = server_groups[selected_group]
+            if selected_group == "single":
+                all_servers = [server for group in server_groups.values() for server in group]
+                print("Available servers:")
+                for server in all_servers:
+                    console.print(f"- {server['alias']}")
+                
+                selected_server_alias = input("Please select a server by alias: ").strip()
+                selected_server = next((server for server in all_servers if server['alias'] == selected_server_alias), None)
+                
+                if not selected_server:
+                    console.print("[bold red]Invalid server selected.[/bold red]")
+                    return
+                
+                servers = [selected_server]
+            else:
+                servers = server_groups[selected_group]
 
     query = args.query
     if not query:
