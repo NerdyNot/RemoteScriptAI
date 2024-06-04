@@ -1,4 +1,4 @@
-# Remote AI Script Executor
+# RemoteScriptAI
 
 This project is a remote script executor that leverages OpenAI or Azure OpenAI to generate scripts centrally, execute them on remote Linux or Windows servers, and interpret the results back into natural language using OpenAI. The tool uses Paramiko for SSH connections to Linux servers and WinRM for connections to Windows servers.
 
@@ -89,7 +89,7 @@ servers:
 To execute commands on remote servers, run the script with the appropriate arguments.
 
 ```sh
-python main.py -c config.yaml -g linux_group -q "Your command here"
+python app.py -c config.yaml -g linux_group -q "Your command here"
 ```
 
 ### Command-line Arguments
@@ -181,7 +181,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ---
 
-# Remote AI Script Executor
+# RemoteScriptAI
 
 이 프로젝트는 OpenAI 또는 Azure OpenAI를 활용하여 중앙에서 스크립트를 생성하고, 이를 원격 Linux 또는 Windows 서버에서 실행한 후, 그 결과를 OpenAI를 통해 자연어로 해석하여 반환하는 도구입니다. Paramiko를 사용하여 Linux 서버에 SSH 연결을 하고, WinRM을 사용하여 Windows 서버에 연결합니다.
 
@@ -274,7 +274,7 @@ servers:
 원격 서버에서 명령을 실행하려면 적절한 인자/옵션과 함께 스크립트를 실행합니다.
 
 ```sh
-python main.py -c config.yaml -g linux_group -q "여기에 명령을 입력하세요"
+python app.py -c config.yaml -g linux_group -q "여기에 명령을 입력하세요"
 ```
 
 ### 명령줄 인수
